@@ -10,6 +10,9 @@ function checkForJammableUrl(tabId, changeInfo, tab) {
         });
     }
     else {
+        chrome.browserAction.setIcon({
+            path : "icon.png" // Whatever the 'active icon will be'
+        });
         chrome.pageAction.hide(tabId);
     }
 }
