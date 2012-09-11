@@ -13,7 +13,7 @@ function checkForJammableUrl(tabId, changeInfo, tab) {
         chrome.browserAction.setIcon({
             path : "icon.png" // Whatever the 'active icon will be'
         });
-        chrome.pageAction.hide(tabId);
+        //chrome.pageAction.hide(tabId);
     }
 }
 
@@ -26,6 +26,7 @@ chrome.tabs.onUpdated.addListener(checkForJammableUrl);
 
 // Called when jamlet icon is clicked
 function jamletClicked(tab) {
+    var destUrl = 'http://www.thisismyjam.com/jam/create?signin=1&source=jamlet&url=' + encodeURIComponent(tab.url);
     chrome.contextMenus.create({
         'title' : 'Choose Which MP3 You Would Like to Make Your Jam',
         'contexts' : ['selection'],
@@ -34,8 +35,7 @@ function jamletClicked(tab) {
         }
     });
 
-    var destUrl = 'http://www.thisismyjam.com/jam/create?signin=1&url=' + encodeURIComponent(tab.url);
-    chrome.tabs.create({'url': destUrl});
+    //chrome.tabs.create({'url': destUrl});
 }
 /*
 chrome.contextMenus.create({

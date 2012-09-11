@@ -1,31 +1,40 @@
 {
-    "name": "Jamlet",
-    "version": "0.1.2",
-    "description": "An easy way to update your song on This Is My Jam whilst browsing supported music sites (SoundCloud, YouTube, Hype Machine, etc).",
-    "browser_action": {
-        "default_icon": "icon.png",
-        "default_title": "Make this your jam",
-        "default_popup": "popup.html"
-    },
-    "content_scripts" : [
-    {
-        "matches" : [
-            "http://*/*",
-            "https://*/*"
-        ],
-        "js" : ["contentscript.js"],
-        "run_at" : "document_idle",
-        "all_frames" : false
-    }
-  ],
+	"name": "Jamlet",
+	"version": "0.1.6.0",
+	"description": "An easy way to update your song on This Is My Jam whilst browsing supported music sites (SoundCloud, YouTube, Hype Machine, etc).",
+	"browser_action": {
+	  "default_icon": "icon.png",
+	  "default_title": "Make this your jam",
+      "default_popup": "popup.html"
+	 },
+  	"background": { "scripts": ["background.js"] },
+	"content_scripts" : [
+	    {
+	      "matches" : [
+	        "http://*.thisismyjam.com/*",
+	        "https://*.thisismyjam.com/*"
+	      ],
+	      "js" : ["jamletcheck.js"],
+		  "run_at" : "document_start"
+	    },
+        {
+            "matches" : [
+                "http://*/*",
+                "https://*/*"
+            ],
+            "js" : ["contentscript.js"],
+            "run_at" : "document_idle",
+            "all_frames" : false
+        }
+	  ],
+	"permissions" : [
+      //"tabs", "http://*.thisismyjam.com/*", "https://*.thisismyjam.com/*", "contextMenus"
+	   "tabs", "http://*/*", "https://*/*"
+    ],
+	"icons" : {
+	  "48" : "icon-48.png",
+	  "128" : "icon-128.png"
+	},
+	"manifest_version": 2
 
-    "background": {
-        "scripts": ["background.js"]
-    },
-    "permissions" : ["tabs","contextMenus"],
-    "icons" : {
-        "48" : "icon-48.png",
-        "128" : "icon-128.png"
-    },
-    "manifest_version": 2
 }

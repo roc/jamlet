@@ -1,28 +1,28 @@
-// function collectMP3Links(){
-//     var links = [],
-//         linkTags = document.getElementsByTagName("a"),
-//         html = false;
+function collectMP3Links(){
+    var links = [],
+        linkTags = document.getElementsByTagName("a"),
+        html = false;
 
-//     for (var i = 0; i < linksTags.length; i++) {
-//         match = linkTags[i].href.match(/\.mp3(\?|\#|$)/);
-//         if(match)
-//             links.push(linkTags[i]);
-//     }
-//     if(!links.length)
-//         return;
-//     else{
-//         html = "<ul>";
-//         for (var n = 0; n < links.length; n++) {
-//             html += "<li>" + link + "</li>";
-//         }
-//         html += "</ul>";
+    for (var i = 0; i < linksTags.length; i++) {
+        match = linkTags[i].href.match(/\.mp3(\?|\#|$)/);
+        if(match)
+            links.push(linkTags[i]);
+    }
+    if(!links.length)
+        return;
+    else{
+        html = "<ul>";
+        for (var n = 0; n < links.length; n++) {
+            html += "<li>" + link + "</li>";
+        }
+        html += "</ul>";
 
-//     }
+    }
 
-//     chrome.extension.sendRequest({},function(response){});
-//     //return html;
+    chrome.extension.sendRequest({},function(response){});
+    //return html;
 
-// }
+}
 
 var matches = false,
     linkTags = document.getElementsByTagName("a");
