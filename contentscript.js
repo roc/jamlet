@@ -23,7 +23,6 @@
 //     //return html;
 
 // }
-console.log("HELLOW CONTENT SCRIPT");
 
 var matches = false,
     linkTags = document.getElementsByTagName("a");
