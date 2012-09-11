@@ -1,12 +1,22 @@
+
 // Called when URLs change
 function checkForJammableUrl(tabId, changeInfo, tab) {
-  if (isPotentiallyJammable(tab.url)) {
-    chrome.pageAction.show(tabId);
-  }
-  else {
-      chrome.pageAction.hide(tabId);
-  }
-};
+    console.log(tabId,changeInfo,tab);
+    if (isPotentiallyJammable(tab.url)) {
+        //chrome.pageAction.show(tabId);
+        console.log("Totally got it");
+        chrome.browserAction.setIcon({
+            path : "active.png" // Whatever the 'active icon will be'
+        });
+    }
+    else {
+        chrome.pageAction.hide(tabId);
+    }
+}
+
+function onRequest(request, sender, sendResponse){
+    console.log("we're in onRequest here", request, sender, sendResponse);
+}
 
 // Listen to URL changes
 chrome.tabs.onUpdated.addListener(checkForJammableUrl);
@@ -14,16 +24,40 @@ chrome.tabs.onUpdated.addListener(checkForJammableUrl);
 // Called when jamlet icon is clicked
 function jamletClicked(tab) {
     var destUrl = 'http://www.thisismyjam.com/jam/create?signin=1&source=jamlet&url=' + encodeURIComponent(tab.url);
+    chrome.contextMenus.create({
+        'title' : 'Choose Which MP3 You Would Like to Make Your Jam',
+        'contexts' : ['selection'],
+        'onclick' : function(info, tab) {
+            console.log('Selected link: ' + info.selectionText);
+        }
+    });
+
     chrome.tabs.create({'url': destUrl});
 }
+/*
+chrome.contextMenus.create({
+    'title' : 'Choose Which MP3 You Would Like to Make Your Jam',
+    'contexts' : ['selection'],
+    'onclick' : function(info, tab) {
+        console.log('Selected link: ' + info.selectionText);
+    }
+});
+*/
+/*
+chrome.contextMenus.onClicked.addListener(
+    //function(OnClickData info, tabs.Tab tab)
+    function(OnClickData info, tabs.Tab tab)
+    {}
+);
+*/
 
-// Jammable URL resolver helper 
+// Jammable URL resolver helper
 function isPotentiallyJammable(string) {
     if(string.match(/^(https?:\/\/)?(www\.)?youtube\.com\/watch.+/i))
         return true; // YouTube watch page
     else if(string.match(/^(https?:\/\/)?(www\.)?soundcloud\.com\/[^\/]+\/[^\/]+/i)) {
         // TODO: instrospect page to make sure?
-        return true; // Potential SoundCloud track page 
+        return true; // Potential SoundCloud track page
     }
     else if(string.match(/^[^ ]+\/[^ ]+\.mp3$/))
         return true; // Found audio
@@ -31,10 +65,15 @@ function isPotentiallyJammable(string) {
         return true; // Hype Machine track page
     else if(string.match(/^(https?:\/\/)[^\/]+\/track\//)) {
         // TODO: Introspect page to make sure?
-        return true; // Potential Bandcamp track page 
+        return true; // Potential Bandcamp track page
     }
+
     return false;
 }
 
 // Listen to clicks
-chrome.pageAction.onClicked.addListener(jamletClicked);
+chrome.browserAction.onClicked.addListener(jamletClicked);
+
+// Listen for the content script to send a message to the background page.
+chrome.extension.onRequest.addListener(onRequest);
+
